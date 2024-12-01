@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #console {
+            width: 300px;
+            height: 50px;
+            margin: 10px auto;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Console Application</h1>
+    <input type="text" id="console" placeholder="Type command here...">
+    <div id="output"></div>
+
+    <script>
+        var isPaused = false;
+        var consoletext = document.getElementById('console');
+        var output = document.getElementById('output'); // Ensure output is correctly referenced
+
+        consoletext.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') { // Check if the Enter key is pressed
+                var cmd = consoletext.value;
+                consoletext.value = ''; // Clear console input
+
+                // Input validation
+                if (cmd === "help") {
+                    logOutput("Available commands: 'cmd', 'startgame', 'pause', 'exit', and 'name'");
+                } else if (cmd === "cmd") {
+                    var command = prompt("Enter command:");
+                    if (command === "startgame") {
+                        startGame();
+                    } else if (command === "pause") {
+                        pauseGame();
+                    } else if (command === "exit") {
+                        exitGame();
+                    } else if (command === "name") {
+                        askForName();
+                    } else {
+                        logOutput("Unknown command. Please try again.");
+                    }
+                } else {
+                    logOutput("Invalid command. Please enter 'cmd' or 'help'");
+                }
+            }
+        });
+
+        function logOutput(message) {
+            output.textContent += message + "\n"; // Append new messages instead of replacing
+        }
+
+        function startGame() {
+            if (isPaused) {
+                logOutput("Game is currently paused. Please resume to continue.");
+            } else {
+                logOutput("Game started!");
+                checkForName(); // Call to check for name upon starting the game
+            }
+        }
+
+        function pauseGame() {
+            if (!isPaused) {
+                isPaused = true;
+                logOutput("Game paused. Use 'resume' to continue.");
+            }
+        }
+
+        function resumeGame() {
+            isPaused = false;
+            logOutput("Game resumed!");
+            // Add logic to resume game here
+        }
+
+        function exitGame() {
+            logOutput("Exiting game...");
+            // Logic to exit the game
+            window.close(); // This will close the window, but may not work in all browsers
+        }
+
+        function askForName() {
+            var name = prompt("Please enter your name");
+            if (name) {
+                logOutput(name + " has joined the game.");
+            } else {
+                logOutput("No name entered.");
+            }
+        }
+
+        function checkForName() {
+            var name = document.getElementById('nameInput').value; // Assuming you have an input for name
+            if (name === "") {
+                logOutput("Please type your name in the input.");
+            } else {
+                logOutput(name + " has joined the game.");
+            }
+        }
+    </script>
+</body>
+</html>
