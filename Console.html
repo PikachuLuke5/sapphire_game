@@ -62,7 +62,7 @@
         });
 
         function logOutput(message) {
-            output.textContent += message + "\n"; // Append new messages instead of replacing
+            output.textContent = message; // Replace old messages with new messages
         }
 
         function startGame() {
@@ -103,7 +103,8 @@
         }
 
         function checkForName() {
-            var name = document.getElementById('nameInput').value; // Assuming you have an input for name
+            // Assuming you have an input for name; if not, you can remove this function
+            var name = ""; // Replace with actual input retrieval if necessary
             if (name === "") {
                 logOutput("Please type your name in the input.");
             } else {
