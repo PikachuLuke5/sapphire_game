@@ -25,20 +25,20 @@
     </style>
 </head>
 <body>
-    <h1>Console Application</h1>
+    <h1>Console</h1>
     <input type="text" id="console" placeholder="Type command here...">
     <div id="output"></div>
-
     <script>
         var isPaused = false;
+        var gameStarted = false; // Declare gameStarted in the outer scope
         var consoletext = document.getElementById('console');
-        var output = document.getElementById('output'); // Ensure output is correctly referenced
-
+        var output = document.getElementById('output');
+    
         consoletext.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') { // Check if the Enter key is pressed
+            if (event.key === 'Enter') {
                 var cmd = consoletext.value;
-                consoletext.value = ''; // Clear console input
-
+                consoletext.value = '';
+    
                 // Input validation
                 if (cmd === "help") {
                     logOutput("Available commands: 'cmd', 'startgame', 'pause', 'exit', and 'name'");
@@ -47,52 +47,73 @@
                     if (command === "startgame") {
                         startGame();
                     } else if (command === "pause") {
-                        pauseGame();
+                        if (gameStarted) {
+                            pauseGame();
+                        } else {
+                            logOutput("No game found! To start, type 'startgame'.");
+                        }
                     } else if (command === "exit") {
-                        exitGame();
+                        if (gameStarted) {
+                            exitGame();
+                        } else {
+                            logOutput("No game found! To start, type 'startgame'.");
+                        }
                     } else if (command === "name") {
-                        askForName();
-                    } else {
-                        logOutput("Unknown command. Please try again.");
+                        if (gameStarted) {
+                            askForName();
+                        } else {
+                            logOutput("No game found! To start, type 'startgame'.");
+                        }
+                    } else if (command === "resume") {
+                        if (gameStarted) {
+                            resumeGame();
+                        } else {
+                            logOutput("No game found! To start, type 'startgame'.");
+                        }
                     }
                 } else {
                     logOutput("Invalid command. Please enter 'cmd' or 'help'");
                 }
             }
         });
-
+    
         function logOutput(message) {
             output.textContent = message; // Replace old messages with new messages
         }
-
+    
         function startGame() {
             if (isPaused) {
                 logOutput("Game is currently paused. Please resume to continue.");
             } else {
+                gameStarted = true; // Set the gameStarted variable to true
                 logOutput("Game started!");
                 askForName(); // Call to check for name upon starting the game
             }
         }
-
+    
         function pauseGame() {
             if (!isPaused) {
                 isPaused = true;
                 logOutput("Game paused. Use 'resume' to continue.");
             }
         }
-
+    
         function resumeGame() {
-            isPaused = false;
-            logOutput("Game resumed!");
-            // Add logic to resume game here
+            if (isPaused) { // Check if the game is paused before resuming
+                isPaused = false;
+                logOutput("Game resumed!");
+                // Add logic to resume game here
+            } else {
+                logOutput("Game is not paused.");
+            }
         }
-
+    
         function exitGame() {
             logOutput("Exiting game...");
             // Logic to exit the game
             window.close(); // This will close the window, but may not work in all browsers
         }
-
+    
         function askForName() {
             var name = prompt("Please enter your name");
             if (name) {
@@ -101,16 +122,6 @@
                 logOutput("No name entered.");
             }
         }
-
-        function checkForName() {
-            // Assuming you have an input for name; if not, you can remove this function
-            var name = ""; // Replace with actual input retrieval if necessary
-            if (name === "") {
-                logOutput("Please type your name in the input.");
-            } else {
-                logOutput(name + " has joined the game.");
-            }
-        }
     </script>
-</body>
 </html>
+
