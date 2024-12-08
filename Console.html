@@ -2,6 +2,7 @@
 <html lang="en" id="html">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Console</title>
     <style>
@@ -27,11 +28,21 @@
     <h1>Console</h1>
     <input type="text" id="console" placeholder="Type command here...">
     <div id="output"></div>
+    <div id="qText"></div>
+
+
     <script>
+        var q = "";
+        var qText = document.getElementById('qText');
+        var a = "";
         var isPaused = false;
         var gameStarted = false;
         var consoletext = document.getElementById('console');
         var output = document.getElementById('output');
+            var correctClassCode1 = "";
+            var correctClassCode2 = "";
+            var correctClassCode3 = "";
+            var classes = [];
 
         consoletext.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
@@ -52,7 +63,9 @@
                 }
             }
         });
-
+        function personRole() {
+            var role = prompt("Please enter your role (student or teacher):");
+        }
         function handleCommand(command) {
             switch (command) {
                 case "startgame":
@@ -73,11 +86,8 @@
                     }
                     break;
                 case "name":
-                    if (gameStarted) {
                         askForName();
-                    } else {
-                        logOutput("No game found! To start, type 'startgame'.");
-                    }
+                        personRole();
                     break;
                 case "resume":
                     if (gameStarted) {
@@ -86,7 +96,19 @@
                         logOutput("No game found! To start, type 'startgame'.");
                     }
                     break;
-                default:
+                    
+                    case "newclass":
+                    createClass();
+                    break;
+                    
+                    case "joinclass":
+                    joinClass();
+                    break;
+                    case "classcodes":
+                    showAllClassCodes();
+                    break;
+
+                    default:
                     logOutput("Unknown command: " + command);
             }
         }
@@ -95,13 +117,13 @@
             output.textContent = message; // Display the message
         }
 
+        function sayQ(question) {
+            qText.textContent = question; // Display the message
+        }
         function startGame() {
-            if (isPaused) {
-                logOutput("Game is currently paused. Please resume to continue.");
-            } else {
-                gameStarted = true;
-                logOutput("Game started! To hear the game, press the space bar.");
-            }
+            isPaused = false;
+            gameStarted = true;
+            logOutput("Game started. To play, press space bar.");
         }
 
         function pauseGame() {
@@ -114,9 +136,9 @@
         function resumeGame() {
             if (isPaused) {
                 isPaused = false;
-                logOutput("Game resumed!");
+                console.log("Game resumed.");
             } else {
-                logOutput("Game is not paused.");
+                console.warn("Game is not paused.");
             }
         }
 
@@ -128,17 +150,92 @@
 
         function askForName() {
             var name = prompt("Please enter your name:");
-            logOutput("Hello, " + name + "!");
+        }
+        
+        if (gameStarted = true) {
+            if (isPaused = false) {
+                document.addEventListener('keydown', function(event) {
+                if (event.key === ' ') {
+                    logOutput("Math or Reading? (Type 'm' which means math, or 'r', which means reading.)");
+                    var okay = prompt("Math or Reading? (Type 'm' which means math, or 'r', which means reading.)");
+                    checkForAnswer();
+                }
+            });
+            } else {
+                logOutput("Game paused. Use 'resume' to continue. (if this message appears on opening the console, just ignore it)");
+            }
+        }
+    
+        function joinClass() {
+            var classCode = prompt("Enter the class code:"); // Initialize classCode
+            if(classCode != correctClassCode1 || classCode != correctClassCode2 || classCode != correctClassCode3) {
+                logOutput("Invalid class code. Please try again.");
+            } else {
+                startGame();
+            }
+
+// Check if classCode is not an empty string
+if (classCode !== correctClassCode1, correctClassCode2, correctClassCode3) {
+    classCode = prompt("Invalid class code. Please try again.");
+}
+        }
+        function personRole() {
+            var role = prompt("Please enter your role (student or teacher):");
         }
 
-        // Space bar event listener
-        document.addEventListener('keydown', function(event) {
-            if (gameStarted && !isPaused) {
-                if (event.key === ' ') {
-                    logOutput("You pressed the space bar!");
-                }
+        function createClass() {
+            if (role === "teacher") {
+                correctClassCode1 = prompt("Enter the class code:");
+                var className = prompt("Enter the class name:");
+                classes.push({ code: correctClassCode1, name: className });
+                logOutput("Class created with code: " + correctClassCode1);
+            } else {
+                logOutput("You are not a teacher. Only teachers can create classes.");
             }
-        });
+        }
+    function showAllClassCodes() {
+    logOutput("All class codes: " + correctClassCode1, correctClassCode2, correctClassCode3); 
+    }
+
+    function checkForAnswer() {
+        if (okay === "m") {
+            logOutput("Math");
+        } else if (okay === "r") {
+            logOutput("Reading");
+        } else {
+            logOutput("Invalid input. Please try again.");
+        }
+    }
+    function saveUserData() {
+    var user = {
+        'name': name
+        , 'role': role
+        , 'classCode': classCode
+        , 'okay': okay
+        , 'correctClassCode1': correctClassCode1
+        , 'correctClassCode2': correctClassCode2
+        , 'correctClassCode3': correctClassCode3
+        , 'isPaused': isPaused
+        , 'gameStarted': gameStarted
+        , 'classes': classes
+    };
+                // Send a POST request to the server
+                fetch('http://localhost:3000/save-object', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("User data saved:", user); // Show success message
+            })
+            .catch((error) => {
+                console.warn('Error:', error);
+            });
+        };
     </script>
+    <a href="http://localhost:3002/stickycity">Sticky City</a>
 </body>
 </html>
