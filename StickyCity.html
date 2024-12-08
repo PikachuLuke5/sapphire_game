@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky City</title>
+</head>
+<body>
+    <input type="text" id="rating" placeholder="Rate Sticky City 1-10">
+    <div id="confirmRating"></div>
+    <script>
+        var ratingi = document.getElementById("rating");
+        var confirmRating = document.getElementById("confirmRating");
+        var rating = "";
+
+        function logRating(message) {
+            confirmRating.textContent = message;
+        }
+
+        ratingi.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                var inputRating = parseInt(ratingi.value); // Convert input to an integer
+                if (isNaN(inputRating) || inputRating < 1 || inputRating > 10) {
+                    logRating("Invalid rating. Please enter a number between 1 and 10.");
+                } else {
+                    rating = inputRating;
+                    logRating("Thank you for your rating: " + rating);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
