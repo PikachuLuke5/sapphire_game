@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    h1 {
+      font-family: sans-serif;
+      text-align: top-center;
+    }
+    p {
+      font-family: sans-serif;
+      text-align: left;
+    }
+    h3 {
+      font-family: sans-serif;
+      text-align: bottom-center;
+    }
+  </style>
+  <h1>Welcome!</h1>
+  <h3 id="welcomeText"></h3>
+  <script>
+    var welcomeTextOptions = {
+      "enus": {
+        welcome: "Welcome to Sapphire!",
+        message1: "Mangos are the best fruit!",
+        message2: "Github: https://github.com/PikachuLuke5/sapphire_game/tree/main",
+        message3: "CODING",
+        message4: "MINECRAFT",
+        message5: "SAPPHIRE",
+        message6: "RECROOM",
+        message7: "Electronics And Engineering"
+      },
+      "jpn": {
+        welcome: "サファイアへようこそ！",
+        message1: "マンゴーは最高の果物です！",
+        message2: "Github: https://github.com/PikachuLuke5/sapphire_game/tree/main",
+        message3: "コーディング",
+        message4: "マインクラフト",
+        message5: "サファイア",
+        message6: "レクリエーションルーム",
+        message7: "電子工学"
+      },
+      "enuk": {
+        welcome: "Welcome to Sapphire!",
+        message1: "Mangoes are the best fruit!",
+        message2: "Github: https://github.com/PikachuLuke5/sapphire_game/tree/main",
+        message3: "CODING",
+        message4: "MINECRAFT",
+        message5: "SAPPHIRE",
+        message6: "RECROOM",
+        message7: "Electronics and Engineering"
+      }
+    };
+
+    var languageMap = {
+      "english": "enus",
+      "en": "enus",
+      "uk": "enuk",
+      "uk english": "enuk",
+      "japanese": "jpn",
+      "jpn": "jpn"
+    };
+
+    function getLanguage() {
+      var langInput = prompt("Please enter your language (e.g., 'en', 'uk', or 'jpn'):");
+      var langCode = languageMap[langInput.toLowerCase()]; // Convert input to lowercase and get the code
+
+      if (langCode) {
+        // Set the welcome header
+        document.getElementById('welcomeText').textContent = welcomeTextOptions[langCode].welcome;
+
+        // Generate a random number to pick a message
+        var pickRandom = Math.floor(Math.random() * 7) + 1; // Generates a number between 1 and 7
+        var welcomeText = welcomeTextOptions[langCode]["message" + pickRandom]; // Access the corresponding message
+        document.getElementById('welcomeText').textContent = welcomeText; // Set the text content
+      } else {
+        document.getElementById('welcomeText').textContent = "Language not supported.";
+      }
+    }
+
+    getLanguage(); // Call the function to execute
+  </script>
+  <script src="HttpsServer.js"></script>
+</html>
